@@ -740,7 +740,7 @@ elif page == "Tentang Proyek":
     | Algoritma | Decision Tree (Gini, max_depth=10, random_state=42) |
     """)
 
-    st.subheader("📊 Ringkasan Hasil")
+    st.subheader("Ringkasan Hasil")
     rows = []
     for name, info in EKSPERIMEN_INFO.items():
         rows.append({"Eksperimen": name,
