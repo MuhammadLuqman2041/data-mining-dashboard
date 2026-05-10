@@ -244,10 +244,10 @@ if page == "Overview":
     """, unsafe_allow_html=True)
 
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("📦 Dataset",     "10.000 baris")
-    col2.metric("🏷️ Kelas Target", "10 tanaman")
-    col3.metric("⚙️ Algoritma",   "Decision Tree")
-    col4.metric("🧪 Eksperimen",  "6 variasi")
+    col1.metric("Dataset",     "10.000 baris")
+    col2.metric("Kelas Target", "10 tanaman")
+    col3.metric("Algoritma",   "Decision Tree")
+    col4.metric("Eksperimen",  "6 variasi")
 
     st.markdown("---")
     st.markdown('<p class="section-title">📋 Ringkasan 6 Eksperimen</p>', unsafe_allow_html=True)
@@ -273,7 +273,7 @@ if page == "Overview":
         """, unsafe_allow_html=True)
 
     st.markdown("---")
-    st.markdown('<p class="section-title">📊 Grafik Perbandingan F1-Score</p>', unsafe_allow_html=True)
+    st.markdown('<p class="section-title">Grafik Perbandingan F1-Score</p>', unsafe_allow_html=True)
 
     eks_labels = [k.split("—")[1].strip() for k in EKSPERIMEN_INFO.keys()]
     f1_vals    = [v["f1"] for v in EKSPERIMEN_INFO.values()]
@@ -295,7 +295,7 @@ if page == "Overview":
     st.plotly_chart(fig, use_container_width=True)
 
     st.markdown("---")
-    st.markdown('<p class="section-title">💡 Key Findings</p>', unsafe_allow_html=True)
+    st.markdown('<p class="section-title">Key Findings</p>', unsafe_allow_html=True)
     c1, c2 = st.columns(2)
     with c1:
         st.info("**DT Baseline** overall F1 tertinggi (0.8085) — namun macro avg F1 hanya 0.47. Kelas minoritas (Tomato, Maize, Pulses) nyaris tidak bisa diprediksi.")
@@ -310,7 +310,7 @@ if page == "Overview":
 elif page == "Eksplorasi Data":
     st.markdown("""
     <div class="hero-header">
-      <h1>📊 Eksplorasi Data</h1>
+      <h1>Eksplorasi Data</h1>
       <p>Analisis distribusi dan karakteristik dataset Crop Recommendation</p>
     </div>
     """, unsafe_allow_html=True)
@@ -319,7 +319,7 @@ elif page == "Eksplorasi Data":
         st.error("File `crop_recommendation.csv` tidak ditemukan.")
         st.stop()
 
-    tab1, tab2, tab3, tab4 = st.tabs(["📋 Data Overview", "📈 Distribusi Kelas", "🔥 Korelasi", "📦 Feature Analysis"])
+    tab1, tab2, tab3, tab4 = st.tabs(["Data Overview", "Distribusi Kelas", "Korelasi", "Feature Analysis"])
 
     with tab1:
         col1, col2, col3 = st.columns(3)
@@ -397,7 +397,7 @@ elif page == "Performa Model":
     </div>
     """, unsafe_allow_html=True)
 
-    tab1, tab2, tab3 = st.tabs(["📊 Grafik Metrik", "🔍 Detail Per Eksperimen", "⚖️ Analisis Trade-off"])
+    tab1, tab2, tab3 = st.tabs(["Grafik Metrik", "Detail Per Eksperimen", "Analisis Trade-off"])
 
     with tab1:
         eks_labels = [k.split("—")[1].strip() for k in EKSPERIMEN_INFO.keys()]
@@ -431,7 +431,7 @@ elif page == "Performa Model":
         col3.metric("Recall",    f"{info['recall']:.4f}")
         col4.metric("F1-Score",  f"{info['f1']:.4f}")
 
-        st.info(f"ℹ️ {info['desc']}")
+        st.info(f"{info['desc']}")
         st.markdown(f"""
         | Parameter | Nilai |
         |---|---|
@@ -492,7 +492,7 @@ elif page == "Performa Model":
 elif page == "Prediksi Tanaman":
     st.markdown("""
     <div class="hero-header">
-      <h1>🔮 Prediksi Rekomendasi Tanaman</h1>
+      <h1>Prediksi Rekomendasi Tanaman</h1>
       <p>Masukkan kondisi lahan untuk mendapatkan rekomendasi tanaman secara otomatis</p>
     </div>
     """, unsafe_allow_html=True)
@@ -501,7 +501,7 @@ elif page == "Prediksi Tanaman":
         st.error("Artifacts tidak lengkap. Jalankan notebook Colab terlebih dahulu.")
         st.stop()
 
-    selected_eks = st.selectbox("🧪 Pilih Eksperimen", list(EKSPERIMEN_INFO.keys()))
+    selected_eks = st.selectbox("Pilih Eksperimen", list(EKSPERIMEN_INFO.keys()))
     info = EKSPERIMEN_INFO[selected_eks]
     model_key = info["key"]
 
@@ -541,7 +541,7 @@ elif page == "Prediksi Tanaman":
 
     st.markdown("---")
 
-    if st.button("🔮 Prediksi Tanaman", type="primary", use_container_width=True):
+    if st.button("Prediksi Tanaman", type="primary", use_container_width=True):
         enc = art["feature_encoders"]
         le  = art["label_encoder"]
         feat_all_names = art["feat_all"]
@@ -589,7 +589,7 @@ elif page == "Prediksi Tanaman":
         </div>
         """, unsafe_allow_html=True)
 
-        st.subheader("🎯 Top 3 Prediksi")
+        st.subheader("Top 3 Prediksi")
         fig = go.Figure(go.Bar(
             x=top3_proba[::-1]*100,
             y=[f"{CROP_EMOJI.get(c,'🌱')} {c}" for c in top3_crops[::-1]],
@@ -608,7 +608,7 @@ elif page == "Prediksi Tanaman":
 elif page == "Batch Prediksi":
     st.markdown("""
     <div class="hero-header">
-      <h1>📂 Batch Prediksi</h1>
+      <h1>Batch Prediksi</h1>
       <p>Upload CSV berisi data lahan untuk prediksi rekomendasi tanaman secara massal</p>
     </div>
     """, unsafe_allow_html=True)
@@ -621,7 +621,7 @@ elif page == "Batch Prediksi":
     info      = EKSPERIMEN_INFO[selected_eks]
     model_key = info["key"]
 
-    st.info(f"ℹ️ Menggunakan: **{selected_eks}** · F1: {info['f1']:.4f}")
+    st.info(f"Menggunakan: **{selected_eks}** · F1: {info['f1']:.4f}")
 
     st.markdown("**Format CSV yang diperlukan** (tanpa kolom Previous_Crop & Recommended_Crop):")
     feat_all_names = art.get("feat_all") or []
@@ -679,7 +679,7 @@ elif page == "Batch Prediksi":
                 st.plotly_chart(fig, use_container_width=True)
 
                 csv_out = df_upload.to_csv(index=False).encode("utf-8")
-                st.download_button("⬇️ Download Hasil Prediksi CSV", csv_out,
+                st.download_button("Download Hasil Prediksi CSV", csv_out,
                                    file_name="hasil_prediksi.csv", mime="text/csv")
         except Exception as e:
             st.error(f"Error: {e}")
@@ -690,21 +690,21 @@ elif page == "Batch Prediksi":
 elif page == "Tentang Proyek":
     st.markdown("""
     <div class="hero-header">
-      <h1>📚 Tentang Proyek</h1>
+      <h1>Tentang Proyek</h1>
       <p>Crop Recommendation Classification Using Data Mining</p>
     </div>
     """, unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
     with col1:
-        st.subheader("👥 Tim")
+        st.subheader("Tim")
         st.markdown("""
         | NIM | Nama |
         |---|---|
         | 202310370311015 | Bukhary Kelian |
         | 202310370311014 | Moch. Luqman Hakim |
         """)
-        st.subheader("🎯 Business Objective")
+        st.subheader("Business Objective")
         st.markdown("""
         Membangun sistem klasifikasi berbasis Data Mining yang secara otomatis
         memprediksi jenis tanaman yang paling direkomendasikan berdasarkan kondisi
@@ -713,7 +713,7 @@ elif page == "Tentang Proyek":
         """)
 
     with col2:
-        st.subheader("📦 Dataset")
+        st.subheader("Dataset")
         st.markdown("""
         | Atribut | Nilai |
         |---|---|
@@ -726,7 +726,7 @@ elif page == "Tentang Proyek":
         | Class Imbalance | 24.5x (Rice vs Maize) |
         """)
 
-    st.subheader("⚙️ Pipeline Eksperimen")
+    st.subheader("Pipeline Eksperimen")
     st.markdown("""
     | Tahap | Teknik |
     |---|---|
