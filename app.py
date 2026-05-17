@@ -20,7 +20,6 @@ st.set_page_config(
 )
 
 MAROON      = "#800000"
-DARK_MAROON = "#4a0000"
 GOLD        = "#c9a84c"
 GRAY        = "#6b6b6b"
 
@@ -81,27 +80,38 @@ RFE_FEATURES = [
 ]
 
 # =============================================================
-# STYLE — maroon theme, selaras dengan versi sebelumnya
+# STYLE — Solid Maroon Theme & Consistent Typography
 # =============================================================
 st.markdown(f"""
 <style>
   /* ── sidebar ── */
   [data-testid="stSidebar"] {{
-      background: linear-gradient(180deg, {DARK_MAROON} 0%, {MAROON} 100%);
+      background: {MAROON};
   }}
   [data-testid="stSidebar"] * {{ color: #fff !important; }}
   [data-testid="stSidebar"] .stRadio label {{ color: #fff !important; }}
 
-  /* ── header strip ── */
+  /* ── header text consistency ── */
+  .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {{
+      color: {MAROON} !important;
+      font-weight: 700 !important;
+  }}
+  /* pastikan text header di sidebar & hero-header tetap putih */
+  [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3,
+  .hero-header h1, .hero-header h2, .hero-header h3 {{
+      color: white !important;
+  }}
+
+  /* ── hero header strip ── */
   .hero-header {{
-      background: linear-gradient(135deg, {DARK_MAROON}, {MAROON});
+      background: {MAROON};
       color: white;
       padding: 28px 32px;
       border-radius: 12px;
       margin-bottom: 24px;
   }}
-  .hero-header h1 {{ color: white; margin: 0 0 6px 0; font-size: 26px; }}
-  .hero-header p  {{ color: #f5c6c6; margin: 0; font-size: 14px; }}
+  .hero-header h1 {{ margin: 0 0 6px 0; font-size: 26px; }}
+  .hero-header p  {{ color: #f5c6c6; margin: 0; font-size: 14px; opacity: 0.9; }}
 
   /* ── metric card ── */
   .metric-card {{
@@ -113,7 +123,7 @@ st.markdown(f"""
       margin-bottom: 10px;
   }}
   .metric-label {{ font-size: 12px; color: {GRAY}; text-transform: uppercase; font-weight: 600; }}
-  .metric-value {{ font-size: 28px; font-weight: 700; color: {DARK_MAROON}; }}
+  .metric-value {{ font-size: 28px; font-weight: 700; color: {MAROON}; }}
 
   /* ── experiment card ── */
   .eks-card {{
@@ -125,7 +135,7 @@ st.markdown(f"""
   }}
   .eks-best {{ border-left: 5px solid {MAROON}; background: #fff0f0; }}
 
-  /* ── section title ── */
+  /* ── section title override for custom dividers ── */
   .section-title {{
       font-size: 18px; font-weight: 700;
       color: {MAROON}; margin-bottom: 12px;
@@ -149,11 +159,11 @@ st.markdown(f"""
 
   /* ── prediction result ── */
   .pred-box {{
-      background: linear-gradient(135deg, {DARK_MAROON}, {MAROON});
+      background: {MAROON};
       color: white; border-radius: 14px;
       padding: 28px; text-align: center; margin: 16px 0;
   }}
-  .pred-crop {{ font-size: 42px; font-weight: 800; margin: 8px 0; }}
+  .pred-crop {{ font-size: 42px; font-weight: 800; margin: 8px 0; color: white !important;}}
   .pred-sub  {{ font-size: 14px; color: #f5c6c6; }}
 
   div[data-testid="stMetric"] {{
@@ -212,7 +222,7 @@ if df is not None:
 # =============================================================
 # SIDEBAR
 # =============================================================
-st.sidebar.markdown("## 🌱 Crop Dashboard")
+st.sidebar.markdown("## Crop Dashboard")
 st.sidebar.markdown("Precision Agriculture · UMM 2025")
 st.sidebar.markdown("---")
 
@@ -227,8 +237,8 @@ page = st.sidebar.radio("Navigasi", [
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Algoritma:** Decision Tree")
-st.sidebar.markdown("**Eksperimen:** 6 variasi pipeline")
-st.sidebar.markdown("**Model terbaik:** DT Baseline")
+st.sidebar.markdown("**Eksperimen:** 6 Variasi Pipeline")
+st.sidebar.markdown("**Model Terbaik:** DT Baseline")
 st.sidebar.markdown("**Best F1-Score:** 0.8085")
 st.sidebar.markdown("*(overall weighted avg)*")
 
@@ -238,7 +248,7 @@ st.sidebar.markdown("*(overall weighted avg)*")
 if page == "Overview":
     st.markdown("""
     <div class="hero-header">
-      <h1>🌾 Crop Recommendation — Data Mining</h1>
+      <h1>Crop Recommendation — Data Mining</h1>
       <p>Klasifikasi rekomendasi tanaman berbasis kondisi lahan & iklim dengan Decision Tree · Universitas Muhammadiyah Malang 2025</p>
     </div>
     """, unsafe_allow_html=True)
@@ -250,14 +260,14 @@ if page == "Overview":
     col4.metric("Eksperimen",  "6 variasi")
 
     st.markdown("---")
-    st.markdown('<p class="section-title">📋 Ringkasan 6 Eksperimen</p>', unsafe_allow_html=True)
+    st.markdown('<p class="section-title">Ringkasan 6 Eksperimen</p>', unsafe_allow_html=True)
 
     rows = []
     best_f1 = max(v["f1"] for v in EKSPERIMEN_INFO.values())
     for name, info in EKSPERIMEN_INFO.items():
         is_best = info["f1"] == best_f1
-        smote_badge = '<span class="badge-smote">SMOTE ✅</span>' if info["smote"] else '<span class="badge-no-smote">No SMOTE</span>'
-        best_badge  = '<span class="badge-best">★ TERBAIK</span>' if is_best else ""
+        smote_badge = '<span class="badge-smote">SMOTE</span>' if info["smote"] else '<span class="badge-no-smote">No SMOTE</span>'
+        best_badge  = '<span class="badge-best">TERBAIK</span>' if is_best else ""
         st.markdown(f"""
         <div class="eks-card {'eks-best' if is_best else ''}">
           <b>{name}</b> {best_badge} &nbsp; {smote_badge} &nbsp;
@@ -350,7 +360,7 @@ elif page == "Eksplorasi Data":
             st.dataframe(dist, use_container_width=True, hide_index=True)
         with col2:
             ratio = dist.iloc[0]["Jumlah"] / dist.iloc[-1]["Jumlah"]
-            st.warning(f"⚠️ **Class Imbalance**: Rasio {ratio:.1f}x\n\n"
+            st.warning(f"**Class Imbalance**: Rasio {ratio:.1f}x\n\n"
                        f"Dominan: **{dist.iloc[0]['Kelas']}** ({dist.iloc[0]['Jumlah']} data)\n\n"
                        f"Minoritas: **{dist.iloc[-1]['Kelas']}** ({dist.iloc[-1]['Jumlah']} data)")
             fig2 = px.pie(dist, names="Kelas", values="Jumlah",
@@ -374,7 +384,7 @@ elif page == "Eksplorasi Data":
             "Fitur"     : ["Rainfall","Temperature","Soil_pH_Bin","Soil_pH","N",
                            "Soil_Type","Altitude_Bin","Wind_Speed","Irrigation_Type","Season"],
             "Chi2 Score": [791.65,723.58,376.82,164.19,151.41,7.51,3.43,3.39,2.79,2.77],
-            "Signifikan": ["✅","✅","✅","✅","✅","❌","❌","❌","❌","❌"],
+            "Signifikan": ["Ya","Ya","Ya","Ya","Ya","Tidak","Tidak","Tidak","Tidak","Tidak"],
         }
         df_chi2 = pd.DataFrame(chi2_data)
         fig = px.bar(df_chi2, x="Chi2 Score", y="Fitur",
@@ -392,7 +402,7 @@ elif page == "Eksplorasi Data":
 elif page == "Performa Model":
     st.markdown("""
     <div class="hero-header">
-      <h1>🧪 Perbandingan 6 Eksperimen Decision Tree</h1>
+      <h1>Perbandingan 6 Eksperimen Decision Tree</h1>
       <p>Perbandingan Decision Tree dengan variasi Feature Selection (Chi2, RFE) dan Balancing (SMOTE)</p>
     </div>
     """, unsafe_allow_html=True)
@@ -456,13 +466,13 @@ elif page == "Performa Model":
             rows.append({
                 "Eksperimen": name.split("—")[1].strip(),
                 "F1-Score (Overall)": info["f1"],
-                "SMOTE": "✅ Ya" if info["smote"] else "❌ Tidak",
+                "SMOTE": "Ya" if info["smote"] else "Tidak",
                 "Feature Selection": info["fitur"].upper() if info["fitur"] != "all" else "Semua",
             })
         df_scatter = pd.DataFrame(rows)
         fig = px.scatter(df_scatter, x="F1-Score (Overall)", y="Eksperimen",
                          color="SMOTE", size=[30]*6,
-                         color_discrete_map={"✅ Ya":"#2ca02c","❌ Tidak":MAROON},
+                         color_discrete_map={"Ya":"#2ca02c","Tidak":MAROON},
                          title="F1-Score vs Konfigurasi SMOTE")
         fig.update_layout(plot_bgcolor="white", height=320)
         st.plotly_chart(fig, use_container_width=True)
@@ -513,7 +523,7 @@ elif page == "Prediksi Tanaman":
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.markdown("**🌱 Nutrisi Tanah**")
+        st.subheader("Nutrisi Tanah")
         N           = st.slider("Nitrogen (N) mg/kg", 20, 159, 90)
         P           = st.slider("Fosfor (P) mg/kg", 10, 89, 50)
         K           = st.slider("Kalium (K) mg/kg", 10, 119, 64)
@@ -523,7 +533,7 @@ elif page == "Prediksi Tanaman":
         elec_cond   = st.slider("Electrical Conductivity (dS/m)", 0.1, 3.0, 1.55)
 
     with col2:
-        st.markdown("**☁️ Kondisi Iklim**")
+        st.subheader("Kondisi Iklim")
         temperature = st.slider("Temperature (°C)", 10.0, 40.0, 25.0)
         humidity    = st.slider("Humidity (%)", 30.0, 90.0, 60.0)
         rainfall    = st.slider("Rainfall (mm/tahun)", 200.0, 3000.0, 1500.0)
@@ -531,8 +541,8 @@ elif page == "Prediksi Tanaman":
         wind_speed  = st.slider("Wind Speed (km/h)", 1.0, 20.0, 10.0)
 
     with col3:
-        st.markdown("**🗺️ Manajemen Lahan**")
-        soil_type   = st.selectbox("Soil Type",       ["Clay","Loamy","Sandy","Silt"])
+        st.subheader("Manajemen Lahan")
+        soil_type   = st.selectbox("Soil Type",        ["Clay","Loamy","Sandy","Silt"])
         region      = st.selectbox("Region",           ["Central","East","North","South","West"])
         altitude    = st.slider("Altitude (mdpl)", 0, 2499, 1240)
         season      = st.selectbox("Season",           ["Kharif","Rabi","Zaid"])
@@ -574,7 +584,7 @@ elif page == "Prediksi Tanaman":
         model     = art["models"][model_key]
         pred_idx  = model.predict(row_input)[0]
         pred_crop = le.inverse_transform([pred_idx])[0]
-        emoji     = CROP_EMOJI.get(pred_crop, "🌱")
+        emoji     = CROP_EMOJI.get(pred_crop, "")
 
         proba = model.predict_proba(row_input)[0]
         top3_idx   = np.argsort(proba)[::-1][:3]
@@ -592,7 +602,7 @@ elif page == "Prediksi Tanaman":
         st.subheader("Top 3 Prediksi")
         fig = go.Figure(go.Bar(
             x=top3_proba[::-1]*100,
-            y=[f"{CROP_EMOJI.get(c,'🌱')} {c}" for c in top3_crops[::-1]],
+            y=[f"{CROP_EMOJI.get(c,'')} {c}" for c in top3_crops[::-1]],
             orientation="h",
             marker_color=[MAROON, "#cc4444", "#e8a0a0"],
             text=[f"{v*100:.1f}%" for v in top3_proba[::-1]],
@@ -617,7 +627,7 @@ elif page == "Batch Prediksi":
         st.error("Artifacts tidak lengkap.")
         st.stop()
 
-    selected_eks = st.selectbox("🧪 Pilih Eksperimen untuk Batch Prediksi", list(EKSPERIMEN_INFO.keys()))
+    selected_eks = st.selectbox("Pilih Eksperimen untuk Batch Prediksi", list(EKSPERIMEN_INFO.keys()))
     info      = EKSPERIMEN_INFO[selected_eks]
     model_key = info["key"]
 
@@ -632,7 +642,7 @@ elif page == "Batch Prediksi":
     if uploaded:
         try:
             df_upload = pd.read_csv(uploaded)
-            st.write(f"✅ {len(df_upload)} baris berhasil dibaca")
+            st.write(f"Berhasil membaca **{len(df_upload)} baris** data.")
             st.dataframe(df_upload.head(), use_container_width=True)
 
             if model_key not in (art.get("models") or {}):
@@ -647,13 +657,19 @@ elif page == "Batch Prediksi":
                     if col in df_proc.columns:
                         df_proc[col] = enc[col].transform(df_proc[col].astype(str))
 
-                df_proc["Soil_pH_Bin"] = pd.cut(df_proc["Soil_pH"],
-                    bins=[4.5,6.0,7.0,8.5], labels=["Acidic","Neutral","Alkaline"],
-                    include_lowest=True)
+                # FIX: Mencegah Data Leakage & Out-of-bounds error dengan menggunakan np.inf
+                df_proc["Soil_pH_Bin"] = pd.cut(
+                    df_proc["Soil_pH"],
+                    bins=[-np.inf, 6.0, 7.0, np.inf], 
+                    labels=["Acidic", "Neutral", "Alkaline"]
+                )
                 df_proc["Soil_pH_Bin"] = enc["Soil_pH_Bin"].transform(df_proc["Soil_pH_Bin"].astype(str))
 
-                df_proc["Altitude_Bin"] = pd.cut(df_proc["Altitude"], bins=3,
-                    labels=["Rendah","Sedang","Tinggi"])
+                df_proc["Altitude_Bin"] = pd.cut(
+                    df_proc["Altitude"], 
+                    bins=[-np.inf, 832.99, 1665.99, np.inf], 
+                    labels=["Rendah", "Sedang", "Tinggi"]
+                )
                 df_proc["Altitude_Bin"] = enc["Altitude_Bin"].transform(df_proc["Altitude_Bin"].astype(str))
 
                 available = [c for c in feat_all_names if c in df_proc.columns]
@@ -663,12 +679,19 @@ elif page == "Batch Prediksi":
                 feat_use  = CHI2_FEATURES if fitur_key=="chi2" else (RFE_FEATURES if fitur_key=="rfe" else feat_all_names)
                 feat_use  = [f for f in feat_use if f in X_batch.columns]
 
-                preds = le.inverse_transform(art["models"][model_key].predict(X_batch[feat_use]))
+                # Prediksi class & probabilitas
+                model_obj = art["models"][model_key]
+                preds = le.inverse_transform(model_obj.predict(X_batch[feat_use]))
+                proba = model_obj.predict_proba(X_batch[feat_use])
+                confidences = proba.max(axis=1) * 100
+                
                 df_upload["Rekomendasi_Tanaman"] = preds
-                df_upload["Emoji"] = [CROP_EMOJI.get(c,"🌱") for c in preds]
+                df_upload["Confidence (%)"] = confidences.round(2)
+                df_upload["Emoji"] = [CROP_EMOJI.get(c,"") for c in preds]
 
-                st.success(f"✅ Prediksi selesai untuk {len(preds)} baris")
-                st.dataframe(df_upload[["Emoji","Rekomendasi_Tanaman"] + list(df_upload.columns[:-2])],
+                st.success(f"Prediksi selesai untuk {len(preds)} baris")
+                # Menampilkan hasil dengan kolom Emoji, Rekomendasi, Confidence di depan
+                st.dataframe(df_upload[["Emoji","Rekomendasi_Tanaman", "Confidence (%)"] + list(df_upload.columns[:-3])],
                              use_container_width=True)
 
                 fig = px.histogram(df_upload, x="Rekomendasi_Tanaman",
