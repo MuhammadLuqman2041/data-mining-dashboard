@@ -181,13 +181,15 @@ st.markdown(f"""
 # =============================================================
 @st.cache_data
 def load_data():
-    p = Path("crop_recommendation.csv")
+    # Mengarah ke folder data/
+    p = Path("data/crop_recommendation.csv")
     return pd.read_csv(p) if p.exists() else None
 
 @st.cache_resource
 def load_artifacts():
     art = {}
-    base = Path(".")
+    # Mengarah ke folder models/
+    base = Path("models")
     simple_files = {
         "scaler"          : "scaler.joblib",
         "label_encoder"   : "label_encoder_target.joblib",
@@ -326,7 +328,7 @@ elif page == "Eksplorasi Data":
     """, unsafe_allow_html=True)
 
     if df is None:
-        st.error("File `crop_recommendation.csv` tidak ditemukan.")
+        st.error("File `data/crop_recommendation.csv` tidak ditemukan.")
         st.stop()
 
     tab1, tab2, tab3, tab4 = st.tabs(["Data Overview", "Distribusi Kelas", "Korelasi", "Feature Analysis"])
@@ -508,7 +510,7 @@ elif page == "Prediksi Tanaman":
     """, unsafe_allow_html=True)
 
     if not art.get("scaler") or not art.get("label_encoder"):
-        st.error("Artifacts tidak lengkap. Jalankan notebook Colab terlebih dahulu.")
+        st.error("Artifacts tidak lengkap. Jalankan notebook Colab terlebih dahulu atau pastikan folder 'models/' sudah terisi penuh.")
         st.stop()
 
     selected_eks = st.selectbox("Pilih Eksperimen", list(EKSPERIMEN_INFO.keys()))
@@ -516,7 +518,7 @@ elif page == "Prediksi Tanaman":
     model_key = info["key"]
 
     if model_key not in (art.get("models") or {}):
-        st.warning(f"Model untuk {selected_eks} belum tersedia.")
+        st.warning(f"Model untuk {selected_eks} belum tersedia di folder 'models/'.")
         st.stop()
 
     st.markdown("---")
@@ -546,7 +548,7 @@ elif page == "Prediksi Tanaman":
         region      = st.selectbox("Region",           ["Central","East","North","South","West"])
         altitude    = st.slider("Altitude (mdpl)", 0, 2499, 1240)
         season      = st.selectbox("Season",           ["Kharif","Rabi","Zaid"])
-        irrigation  = st.selectbox("Irrigation Type",  ["Canal","Drip","Rainfed","Sprinkler"])
+         irrigation = st.selectbox("Irrigation Type",  ["Canal","Drip","Rainfed","Sprinkler"])
         fertilizer  = st.slider("Fertilizer Used (kg/ha)", 50.0, 350.0, 200.0)
 
     st.markdown("---")
@@ -624,7 +626,7 @@ elif page == "Batch Prediksi":
     """, unsafe_allow_html=True)
 
     if not art.get("scaler") or not art.get("label_encoder"):
-        st.error("Artifacts tidak lengkap.")
+        st.error("Artifacts tidak lengkap. Pastikan folder 'models/' sudah terisi penuh.")
         st.stop()
 
     selected_eks = st.selectbox("Pilih Eksperimen untuk Batch Prediksi", list(EKSPERIMEN_INFO.keys()))
