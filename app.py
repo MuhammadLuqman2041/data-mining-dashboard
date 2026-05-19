@@ -548,7 +548,7 @@ elif page == "Prediksi Tanaman":
         region      = st.selectbox("Region",           ["Central","East","North","South","West"])
         altitude    = st.slider("Altitude (mdpl)", 0, 2499, 1240)
         season      = st.selectbox("Season",           ["Kharif","Rabi","Zaid"])
-         irrigation = st.selectbox("Irrigation Type",  ["Canal","Drip","Rainfed","Sprinkler"])
+        irrigation = st.selectbox("Irrigation Type",  ["Canal","Drip","Rainfed","Sprinkler"])  # ← hapus spasi di depan
         fertilizer  = st.slider("Fertilizer Used (kg/ha)", 50.0, 350.0, 200.0)
 
     st.markdown("---")
